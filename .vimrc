@@ -1,6 +1,7 @@
 call plug#begin('~/.vim/plugged')
 
 Plug 'vim-airline/vim-airline'
+Plug 'tpope/vim-surround'
 
 call plug#end()
 
