@@ -9,7 +9,7 @@ alias config='git --git-dir="$HOME/.cfg" --work-tree="$HOME"'
 PS1="
 \w 👉 "
 
-export JAVA_HOME="/Users/me/Applications/jdk-12.0.2.jdk/Contents/Home"
+export JAVA_HOME='/Users/me/Applications/jdk-12.0.2.jdk/Contents/Home'
 export PATH="$JAVA_HOME/bin:$PATH"
 export EDITOR=vim
 export VISUAL='code --wait'
