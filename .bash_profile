@@ -6,8 +6,8 @@ alias enter='docker run -it --rm'
 alias search='mdfind -onlyin .'
 alias config='git --git-dir="$HOME/.cfg" --work-tree="$HOME"'
 
-PS1="
-\w 👉 "
+PROMPT_COMMAND=echo
+PS1="\w 👉 "
 
 export JAVA_HOME='/Users/me/Applications/jdk-12.0.2.jdk/Contents/Home'
 export PATH="$JAVA_HOME/bin:$PATH"
