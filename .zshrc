@@ -2,7 +2,7 @@ export CLICOLOR=1
 PROMPT='%~ 👉 '
 
 alias l='ls -l'
-alias la='l -a'
+alias la='l -A'
 alias e=vim
 alias p=python3
 
