@@ -1,0 +1,8 @@
+[user]
+	name = Harish Kukreja
+	email = harish.kukreja@gmail.com
+[alias]
+	b = branch
+	co = checkout
+	s = status
+	d = diff
