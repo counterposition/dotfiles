@@ -29,7 +29,7 @@ Once you have installed the command line tools, create a root directory for all 
 git clone https://github.com/hkukreja/dotfiles
 ```
 
-Now carefully copy each dotfile to your home directory. Watch out for `eval`s of software that doesn't yet exist on the new system, like fnm. Comment these out for now.
+Now carefully copy each dotfile to your home directory. Watch out for `eval`s of software that doesn't yet exist on the new system, like `fnm`. Comment these out for now.
 
 Install Visual Studio Code for a graphical text editor.
 
@@ -64,11 +64,22 @@ Now get the login token for GitHub CLI by running `gh auth login`.
 
 ### Other configuration
 
+#### Node.js
+
 If you installed Node.js earlier, be sure to edit your global npm config:
 
 ```shell
 npm config -g set init-author-name 'Harish Kukreja'
 npm config -g set init-author-email 'your.email@domain.tld'
 ```
+
+#### Python
+
+If you installed Python earlier, be sure to install Poetry and configure it so that it creates virtualenvs in the project root instead of `~/Library/Caches`.
+
+Install Poetry from its official website using the showcased shell script.
+
+Afer that, ensure your `PATH` has been updated accordingly.
+Finally, run `poetry config virtualenvs.in-project true` to make it create all virtualenvs in the project root
 
 You're all set. Happy hacking!
