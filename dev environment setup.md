@@ -7,11 +7,12 @@
     1. fd-find
     1. ripgrep
     1. broot
-    1. fnm (to install and manage Node.js)
 1. Homebrew
     1. GitHub CLI
-    1. Python
     1. Go
+    1. asdf (to install and manage Ruby, Node.js, Python, and Java)
+        1. gpg and gawk are dependencies
+    1. fzf
 1. Visual Studio Code
 
 ## The installation process
@@ -29,7 +30,7 @@ Once you have installed the command line tools, create a root directory for all 
 git clone https://github.com/hkukreja/dotfiles
 ```
 
-Now carefully copy each dotfile to your home directory. Watch out for `eval`s of software that doesn't yet exist on the new system, like `fnm`. Comment these out for now.
+Now carefully copy each dotfile to your home directory. Watch out for `eval`s of software that doesn't yet exist on the new system, like *asdf*. Comment these out for now.
 
 Install Visual Studio Code for a graphical text editor.
 
@@ -40,14 +41,16 @@ Go to [the rustup homepage](rustup.rs) and run the command listed there.
 After you're done adding the right commands to your shell config files to put `cargo` on your `PATH` and such, install the aforementioned utilities
 
 ```shell
-cargo install tealdeer fd-find ripgrep broot fnm
+cargo install tealdeer fd-find ripgrep broot
 ```
 
 #### Installing Node.js
 
-Now that you have fnm, install the latest LTS release of Node.js by running `fnm install --lts`
+First, install *asdf* and its associated plugin for Node.js.
 
-(Note: as of this writing, there is still no LTS release for Apple Silicon.
+Next, install the latest LTS release of Node.js by running `asdf install --lts`
+
+(**Note**: as of this writing, there is still no LTS release for Apple Silicon.
 You will have to install the bleeding edge release for now.)
 
 ### Install Homebrew
