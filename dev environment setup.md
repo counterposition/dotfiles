@@ -44,14 +44,16 @@ After you're done adding the right commands to your shell config files to put `c
 cargo install tealdeer fd-find ripgrep broot
 ```
 
-#### Installing Node.js
+### Install Node.js, Python, Ruby, and other language toolchains
 
 First, install *asdf* and its associated plugin for Node.js.
 
-Next, install the latest LTS release of Node.js by running `asdf install --lts`
+Next, install the latest LTS release of Node.js by running `asdf install nodejs <version>`
 
-(**Note**: as of this writing, there is still no LTS release for Apple Silicon.
-You will have to install the bleeding edge release for now.)
+Set the global Node.js version with `asdf global nodejs <version>`.
+This version will be used by default unless overriden per-project by `asdf local nodejs <version>`.
+
+Apply these steps for Python, Ruby, and whatever else you wish to install.
 
 ### Install Homebrew
 
@@ -60,7 +62,7 @@ Go to the [Homebrew homepage](brew.sh) and run the command listed there.
 After you're done adding the right commands to your shell config (probably `.zprofile`), install the aforementioned utilities
 
 ```shell
-brew install gh python go
+brew install gh go
 ```
 
 Now get the login token for GitHub CLI by running `gh auth login`.
