@@ -6,3 +6,10 @@
 	co = checkout
 	s = status
 	d = diff
+	l = log
+[pull]
+	ff = only
+[core]
+	autocrlf = input
+[init]
+	defaultBranch = master
