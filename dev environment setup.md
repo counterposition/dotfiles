@@ -67,6 +67,13 @@ brew install gh go
 
 Now get the login token for GitHub CLI by running `gh auth login`.
 
+### Install Go applications
+
+`go install` the following:
+* [charmbracelet/glow](https://github.com/charmbracelet/glow)
+* [FiloSottile/age](https://github.com/FiloSottile/age) - `go install filippo.io/age/cmd/...@latest`
+* [mozilla/sops](https://github.com/mozilla/sops)
+
 ### Other configuration
 
 #### Node.js
