@@ -62,17 +62,10 @@ Go to the [Homebrew homepage](brew.sh) and run the command listed there.
 After you're done adding the right commands to your shell config (probably `.zprofile`), install the aforementioned utilities
 
 ```shell
-brew install gh go
+brew install gh go glow age sops postgresql
 ```
 
 Now get the login token for GitHub CLI by running `gh auth login`.
-
-### Install Go applications
-
-`go install` the following:
-* [charmbracelet/glow](https://github.com/charmbracelet/glow)
-* [FiloSottile/age](https://github.com/FiloSottile/age) - `go install filippo.io/age/cmd/...@latest`
-* [mozilla/sops](https://github.com/mozilla/sops)
 
 ### Other configuration
 
