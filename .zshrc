@@ -69,3 +69,9 @@ complete -C /usr/local/bin/aws_completer aws
 
 
 . $HOME/.asdf/asdf.sh
+
+# Functions
+
+function grr {
+	cd $(git rev-parse --show-toplevel)
+}
