@@ -9,7 +9,3 @@
 	l = log
 [pull]
 	ff = only
-[core]
-	autocrlf = input
-[init]
-	defaultBranch = master
