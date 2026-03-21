@@ -1,42 +1,57 @@
-export CLICOLOR=1
-export EDITOR=vim
-export VISUAL='code -w'
-
-bindkey -e
-
+# Shell aliases
 alias l='ls -l'
-alias la='l -A'
-alias e=vim
+alias la='ls -la'
+alias e=nvim
+alias view='nvim -R'
 alias p=python3
 alias pn=pnpm
-alias pg=pg_ctl
+alias pnx='pnpm dlx'
 alias d=docker
-alias be='bundle exec'
-alias tf=terraform
-alias k=kubectl
-alias nine=k9s
+alias oc=opencode
 
-# sindresorhus/pure prompt
-fpath+=("$HOME/.zsh/pure")
-autoload -U promptinit; promptinit
-prompt pure
+# git aliases
+alias ga='git add'
+alias gl='git log'
+alias gs='git status'
+alias gp='git pull'
+alias gd='git diff'
+alias gb='git branch'
+alias gco='git checkout'
 
-# Other ZSH completions
-fpath+=("/opt/homebrew/share/zsh/site-functions")
+export CLICOLOR=1
+export EDITOR=nvim
+export VISUAL='cursor --wait'
 
-# Custom ZSH completions
-fpath+=("$HOME/.zsh/functions") 
+# Applications installed using package managers other than Homebrew, and custom shell scripts
+path+=(
+  "$HOME/.local/bin"
+  "$HOME/.bun/bin"
+  "$HOME/Applications/bin"
+  "$HOME/.lmstudio/bin"
+  /Applications/Obsidian.app/Contents/MacOS
+)
 
-# pe stands for "path exists?"
-# Checks whether the given argument exists as a file or a folder
-# If it exists, the function prints "$1 is a [file|directory]". Otherwise it prints nothing
-function pe {
-	if [[ -f $1 ]]; then
-		echo $1 is a file
-	elif [[ -d $1 ]]; then
-		echo $1 is a directory
-	fi
-}	
+# Lazy-load my custom shell functions
+fpath+=( ~/.zfunctions )
+for func in ~/.zfunctions/*; do
+  autoload -Uz ${func:t}
+done
+
+# Prompt with git integration (uses built-in vcs_info for speed)
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:git:*' stagedstr '%F{green}+%f'
+zstyle ':vcs_info:git:*' unstagedstr '%F{red}*%f'
+zstyle ':vcs_info:git:*' formats ' %F{cyan}(%b)%f%c%u'
+zstyle ':vcs_info:git:*' actionformats ' %F{cyan}(%b|%a)%f%c%u'
+
+precmd_vcs_info() { vcs_info }
+precmd_functions+=( precmd_vcs_info )
+setopt prompt_subst
+
+PROMPT='%F{green}%n%f@%F{blue}Quint%f:%F{yellow}%~%f${vcs_info_msg_0_} %# '
+RPROMPT='%(?..%F{red}%? ↵%f)'
 
 # Automatically included by the broot post-install script
 function br {
@@ -59,19 +74,8 @@ function br {
     eval "$d"
 }
 
-# asdf
-fpath+=("$HOME/.asdf/completions")
-autoload -Uz compinit && compinit
+# Activate mise hook
+eval "$(mise activate zsh)"
 
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /opt/homebrew/bin/terraform terraform
-complete -C /usr/local/bin/aws_completer aws
-
-
-. $HOME/.asdf/asdf.sh
-
-# Functions
-
-function grr {
-	cd $(git rev-parse --show-toplevel)
-}
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
