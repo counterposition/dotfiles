@@ -1,0 +1,5 @@
+# 'grr' is short for "git repo root"
+# cd to the nearest git repository root found by moving up the directory tree
+function grr {
+  cd "$(git rev-parse --show-toplevel || echo .)"
+}
