@@ -1,0 +1,73 @@
+# cdf — fuzzy cd into a subdirectory
+#
+# Usage:
+#   cdf
+#   cdf ~/Code
+#   cdf -a
+#   cdf --all ~/Library
+
+function cdf {
+  local include_all=0
+  local root_arg=.
+  local target
+  local arg
+  local exclude
+  local rel
+  local -a default_excludes
+  local -a fd_args
+
+  default_excludes=(
+    "$HOME/Library"
+    "$HOME/go"
+    "$HOME/Pictures/Photos Library.photoslibrary"
+  )
+
+  for arg in "$@"; do
+    case "$arg" in
+      -a|--all)
+        include_all=1
+        ;;
+      *)
+        root_arg="$arg"
+        ;;
+    esac
+  done
+
+  local root="${root_arg:A}"
+
+  fd_args=(--type d --base-directory "$root")
+
+  if (( ! include_all )); then
+    for exclude in "${default_excludes[@]}"; do
+      exclude="${exclude:A}"
+
+      [[ "$exclude" == "$root" ]] && continue
+
+      if [[ "$root" == / ]]; then
+        rel="${exclude#/}"
+      elif [[ "$exclude" == "$root"/* ]]; then
+        rel="${exclude#$root/}"
+      else
+        continue
+      fi
+
+      fd_args+=(--exclude "$rel")
+    done
+  fi
+
+  target=$(
+    fd "${fd_args[@]}" 2>/dev/null \
+      | fzf \
+        --height=60% \
+        --layout=reverse \
+        --border=rounded \
+        --prompt="cd > " \
+        --header="type to fuzzy-match directories…" \
+        --preview="ls -CF --color=always '${root}/{}'" \
+        --preview-window=right:30%:wrap \
+        --select-1 \
+        --exit-0
+  )
+
+  [[ -n "$target" ]] && cd "${root}/${target}"
+}
