@@ -9,7 +9,8 @@ Optimize for safe, minimal edits. Most changes here are shell ergonomics, config
 - `.zshenv` runs for every zsh process; keep it tiny and side-effect light.
 - `.zprofile` is for login-shell setup.
 - `.zshrc` is for interactive aliases, prompt config, completions, and integrations.
-- `.gitconfig` is plain INI-style Git config.
+- `.bash_profile` is the GNU/Linux bash login-shell equivalent of `.zshenv` + `.zprofile`.
+- `.bashrc` is the GNU/Linux bash interactive-shell equivalent of `.zshrc`.
 - `dev environment setup.md` is beginner-facing documentation.
 
 There is no package manifest, Makefile, CI config, formatter config, or dedicated test suite.
@@ -21,12 +22,19 @@ Syntax-check all tracked zsh files:
 zsh -n .zshrc .zprofile .zshenv
 ```
 
+Syntax-check all tracked bash files:
+```sh
+bash -n .bashrc .bash_profile
+```
+
 Syntax-check a single file:
 
 ```sh
 zsh -n .zshrc
 zsh -n .zprofile
 zsh -n .zshenv
+bash -n .bashrc
+bash -n .bash_profile
 ```
 
 Load all startup files in a clean subprocess:
@@ -49,11 +57,10 @@ Because there is no test runner, a single test usually means one focused command
 - `zsh -n .zshrc`
 - `zsh -fc 'source ./.zshrc && alias oc'`
 - `zsh -fc 'source ./.zshrc && whence -w precmd_vcs_info'`
+- `bash -n .bashrc`
 
 ### Notes
 
-- `shellcheck` and `shfmt` are not configured in this repo and were not installed during analysis.
-- If you add either tool, document the exact command here and keep the change small.
 - These baseline smoke tests succeeded while creating this file:
 ```sh
 zsh -n .zshrc .zprofile .zshenv
@@ -75,6 +82,8 @@ zsh -fc 'source ./.zshenv && source ./.zprofile && source ./.zshrc && alias gs &
 - Put interactive behavior in `.zshrc`, not `.zshenv`.
 - Keep `.zshenv` fast, portable, and safe for every zsh invocation.
 - Keep login-only setup in `.zprofile`.
+- For bash: put interactive behavior in `.bashrc`, login-only setup in `.bash_profile`.
+- `.bash_profile` sources `.bashrc`; do not duplicate interactive config between them.
 - Do not move code across startup files without a clear shell-startup reason.
 
 ### Imports / sourcing
@@ -130,6 +139,8 @@ Shell has no static types here, so scope carefully.
 - `.zshrc`: main place for aliases, prompt config, `fpath`, autoloading, and interactive integrations. Preserve section ordering unless regrouping clearly helps. The `br` function comes from the broot post-install script; avoid rewriting it unless necessary. Prompt code already uses `vcs_info`; prefer built-ins over heavier prompt frameworks.
 - `.zprofile`: keep the OrbStack initialization intact unless the user asks otherwise. Preserve the quiet optional-integration pattern `2>/dev/null || :`.
 - `.zshenv`: keep it minimal. Only put environment setup here that must exist for every zsh process.
+- `.bashrc`: the GNU/Linux bash equivalent of `.zshrc`. Mirrors the same aliases, functions, and integrations, adapted for bash syntax and GNU/Linux conventions. Uses `PROMPT_COMMAND` with `__set_prompt` for git-aware prompt instead of zsh `vcs_info`. Uses `ls --color=auto` instead of `CLICOLOR`. Omits `VISUAL` (set per-machine). Omits macOS-specific paths.
+- `.bash_profile`: the GNU/Linux bash login-shell config. Sources cargo env and `.bashrc`. Keep it minimal like `.zshenv` + `.zprofile`.
 - `.gitconfig`: preserve INI formatting, keep aliases short and consistent with current single-letter patterns, and do not change Git identity unless explicitly asked.
 - `dev environment setup.md`: keep docs task-oriented and beginner-readable, use fenced shell blocks for commands, and prefer step-by-step instructions over dense prose.
 
@@ -138,13 +149,14 @@ Shell has no static types here, so scope carefully.
 - Do not add machine-specific absolute paths outside `$HOME` unless clearly required.
 - Do not add secrets, tokens, or private hostnames.
 - Do not silently normalize generated blocks if that risks changing behavior.
-- Do not assume Bash compatibility; this repo is zsh-first.
+- Do not assume Bash compatibility in the zsh files; the zsh files are macOS-first.
+- Do not use zsh-specific syntax in the bash files; the bash files target GNU/Linux.
 
 ## Suggested Agent Workflow
 1. Read the target dotfile and adjacent startup files.
 2. Make the smallest safe change.
-3. Run `zsh -n` on the affected file, or on all zsh files for shared changes.
-4. If behavior changed, run one focused `zsh -fc` probe for that alias, function, or variable.
+3. Run `zsh -n` on affected zsh files, or `bash -n` on affected bash files.
+4. If behavior changed, run one focused `zsh -fc` or `bash -c` probe for that alias, function, or variable.
 5. Summarize the user-visible shell impact clearly.
 
 ## When To Update This File
